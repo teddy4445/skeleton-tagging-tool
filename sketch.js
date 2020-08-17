@@ -1,6 +1,6 @@
 // canvas Z-Index
 var zIndex = 300;
-var imgSize = 400;
+var imgSize = 800;
 
 var countFrame = 0;
 var dataFrames = [];
@@ -21,6 +21,7 @@ function prev()
 		countFrame--;
 	}
 	openCloseBtns();
+	dataFrames[countFrame].print(true);
 }
 
 // start the simulation draw loop and manage the control buttons 
@@ -31,6 +32,7 @@ function next()
 		countFrame++;
 	}
 	openCloseBtns();
+	dataFrames[countFrame].print(true);
 }
 
 // start the simulation draw loop and manage the control buttons 
@@ -65,7 +67,7 @@ function openCloseBtns()
 	{
 		document.getElementById("next").disabled = false;
 	}
-	console.log(countFrame);
+	console.log("Frame Index #" + (1 + countFrame));
 }
 
 // --- END DOM ACTIONS --- //
@@ -74,15 +76,17 @@ function openCloseBtns()
 // ------------------- END OF GLOBAL VARS ------------------------ // 
 
 function preload() {
-  img1 = loadImage('img/img1.jpg');
+  var img1 = loadImage('img/img1.jpg');
   img1.resize(imgSize, imgSize);
-  skeleton1 = new Skeleton(300, 300, 200, 300, 300, 100, 200, 100, 250, 200, 250, 100);
-  dataFrames.push(new imageSkeleton(img1, skeleton1, "img1.jpg"));
+  var skeleton1 = new Skeleton(673, 729, 326, 624, 384, 320, 687, 379, 507, 170, 502, 402);
+  var ball1 = new Ball(695, 415);
+  dataFrames.push(new imageSkeleton(img1, skeleton1, ball1, "img1.jpg"));
   
-  img2 = loadImage('img/img2.jpg');
-  img1.resize(imgSize, imgSize);
-  skeleton2 = new Skeleton(300, 300, 200, 300, 300, 100, 200, 100, 250, 200, 250, 100);
-  dataFrames.push(new imageSkeleton(img2, skeleton2, "img2.jpg"));
+  var img2 = loadImage('img/img2.jpg');
+  img2.resize(imgSize, imgSize);
+  var skeleton2 = new Skeleton(490, 508, 290, 527, 330, 290, 490, 365, 406, 125, 400, 288);
+  var ball2 = new Ball(347, 350);
+  dataFrames.push(new imageSkeleton(img2, skeleton2, ball2, "img2.jpg"));
 }
 
 // setup all the simulation before starting 
@@ -92,6 +96,7 @@ function setup()
 	cnv.parent('game');
 	// setup for simulation
 	frameRate(24);
+	dataFrames[countFrame].print(true);
 }
 
 // loop run on the simulation
