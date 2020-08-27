@@ -43,22 +43,66 @@ class imageSkeleton
 
 class Skeleton
 {
-	// TODO: finish for all added points
 	constructor(leg_left_x, leg_left_y,
-	leg_right_x, leg_right_y,
-	hand_left_x, hand_left_y,
-	hand_right_x, hand_right_y,
-	sholder_x, sholder_y,
-	center_x, center_y)
+		leg_right_x, leg_right_y,
+		hand_right_x, hand_right_y,
+		hand_left_x, hand_left_y,
+		leg_left_knee_x, leg_left_knee_y,
+		leg_right_knee_x, leg_right_knee_y,
+		hand_left_knee_x, hand_left_knee_y,
+		hand_right_knee_x, hand_right_knee_y,
+		sholder_left_x, sholder_left_y,
+		sholder_right_x, sholder_right_y,
+		center_x, center_y,
+		head_x, head_y)
 	{
 		this.leg_left = new SkeletonJoint("left_leg", leg_left_x, leg_left_y);
 		this.leg_right = new SkeletonJoint("leg_right", leg_right_x, leg_right_y);
 		this.hand_right = new SkeletonJoint("hand_right", hand_right_x, hand_right_y);
 		this.hand_left = new SkeletonJoint("hand_left", hand_left_x, hand_left_y);
-		this.sholder = new SkeletonJoint("sholder", sholder_x, sholder_y);
-		this.center = new SkeletonJoint("center", center_x, center_y);
 		
-		this.joints = [this.leg_left, this.leg_right, this.hand_right, this.hand_left, this.sholder, this.center]
+		this.leg_left_knee = new SkeletonJoint("leg_left_knee", leg_left_knee_x, leg_left_knee_y);
+		this.leg_right_knee = new SkeletonJoint("leg_right_knee", leg_right_knee_x, leg_right_knee_y);
+		this.hand_left_knee = new SkeletonJoint("hand_left_knee", hand_left_knee_x, hand_left_knee_y);
+		this.hand_right_knee = new SkeletonJoint("hand_right_knee", hand_right_knee_x, hand_right_knee_y);
+		
+		this.sholder_left = new SkeletonJoint("sholder_left", sholder_left_x, sholder_left_y);
+		this.sholder_right = new SkeletonJoint("sholder_right", sholder_right_x, sholder_right_y);
+		this.sholder_center = new SkeletonJoint("sholder_center", (sholder_right_x + sholder_left_x)/2, (sholder_left_y + sholder_right_y) / 2);
+		
+		this.center = new SkeletonJoint("center", center_x, center_y);
+		this.head = new SkeletonJoint("head", head_x, head_y);
+		
+		this.joints = [this.leg_left, 
+			this.leg_right, 
+			this.hand_right, 
+			this.hand_left, 
+			this.leg_left_knee,
+			this.leg_right_knee,
+			this.hand_left_knee,
+			this.hand_right_knee,
+			this.sholder_left, 
+			this.sholder_right, 
+			this.center, 
+			this.head,
+		]
+	}
+	
+	static fromJsonString(jsonString)
+	{
+		var jsonObj = JSON.parse(jsonString);
+		return new Skeleton(jsonObj["left_leg"]["x"], jsonObj["left_leg"]["y"],
+							jsonObj["leg_right"]["x"], jsonObj["leg_right"]["y"],
+							jsonObj["hand_right"]["x"], jsonObj["hand_right"]["y"],
+							jsonObj["hand_left"]["x"], jsonObj["hand_left"]["y"],
+							jsonObj["leg_left_knee"]["x"], jsonObj["leg_left_knee"]["y"],
+							jsonObj["leg_right_knee"]["x"], jsonObj["leg_right_knee"]["y"],
+							jsonObj["hand_left_knee"]["x"], jsonObj["hand_left_knee"]["y"],
+							jsonObj["hand_right_knee"]["x"], jsonObj["hand_right_knee"]["y"],
+							jsonObj["sholder_left"]["x"], jsonObj["sholder_left"]["y"],
+							jsonObj["sholder_right"]["x"], jsonObj["sholder_right"]["y"],
+							jsonObj["center"]["x"], jsonObj["center"]["y"],
+							jsonObj["head"]["x"], jsonObj["head"]["y"]);	
 	}
 	
 	on_point(x, y)
@@ -75,6 +119,8 @@ class Skeleton
 	
 	set_new_point(name, new_x, new_y)
 	{
+		this.sholder_center.x = (this.sholder_right.x + this.sholder_left.x) / 2;
+		this.sholder_center.y = (this.sholder_left.y + this.sholder_right.y) / 2;
 		for (var i = 0; i < this.joints.length; i++)
 		{
 			if (this.joints[i].name == name)
@@ -96,11 +142,24 @@ class Skeleton
 		
 		// lines between them 
 		stroke(255);
-		line(this.leg_left.x, this.leg_left.y, this.center.x, this.center.y);
-		line(this.leg_right.x, this.leg_right.y, this.center.x, this.center.y);
-		line(this.hand_left.x, this.hand_left.y, this.sholder.x, this.sholder.y);
-		line(this.hand_right.x, this.hand_right.y, this.sholder.x, this.sholder.y);
-		line(this.sholder.x, this.sholder.y, this.center.x, this.center.y);
+		line(this.leg_left.x, this.leg_left.y, this.leg_left_knee.x, this.leg_left_knee.y);
+		line(this.leg_left_knee.x, this.leg_left_knee.y, this.center.x, this.center.y);
+		
+		line(this.leg_right.x, this.leg_right.y, this.leg_right_knee.x, this.leg_right_knee.y);
+		line(this.leg_right_knee.x, this.leg_right_knee.y, this.center.x, this.center.y);
+		
+		line(this.center.x, this.center.y, this.sholder_center.x, this.sholder_center.y);
+		
+		line(this.sholder_left.x, this.sholder_left.y, this.sholder_center.x, this.sholder_center.y);
+		line(this.sholder_right.x, this.sholder_right.y, this.sholder_center.x, this.sholder_center.y);
+		
+		line(this.head.x, this.head.y, this.sholder_center.x, this.sholder_center.y);
+		
+		line(this.hand_left.x, this.hand_left.y, this.hand_left_knee.x, this.hand_left_knee.y);
+		line(this.hand_left_knee.x, this.hand_left_knee.y, this.sholder_left.x, this.sholder_left.y);
+		
+		line(this.hand_right.x, this.hand_right.y, this.hand_right_knee.x, this.hand_right_knee.y);
+		line(this.hand_right_knee.x, this.hand_right_knee.y, this.sholder_right.x, this.sholder_right.y);
 	}
 	
 	toString()

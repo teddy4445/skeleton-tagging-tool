@@ -75,18 +75,74 @@ function openCloseBtns()
 
 // ------------------- END OF GLOBAL VARS ------------------------ // 
 
-function preload() {
-  var img1 = loadImage('img/img1.jpg');
-  img1.resize(imgSize, imgSize);
-  var skeleton1 = new Skeleton(673, 729, 326, 624, 384, 320, 687, 379, 507, 170, 502, 402);
-  var ball1 = new Ball(695, 415);
-  dataFrames.push(new imageSkeleton(img1, skeleton1, ball1, "img1.jpg"));
-  
-  var img2 = loadImage('img/img2.jpg');
-  img2.resize(imgSize, imgSize);
-  var skeleton2 = new Skeleton(490, 508, 290, 527, 330, 290, 490, 365, 406, 125, 400, 288);
-  var ball2 = new Ball(347, 350);
-  dataFrames.push(new imageSkeleton(img2, skeleton2, ball2, "img2.jpg"));
+let skeletons = [[730.7777709960938, 599.3333282470703, 584.7777709960938,626.3333282470703, 597.7777709960938, 537.3333282470703, 568.7777709960938, 538.3333282470703, 622.7777709960938, 583.3333282470703, 595.7777709960938, 569.3333282470703, 594.7777709960938, 518.3333282470703, 687.7777709960938, 519.3333282470703, 620.7777709960938, 499.3333282470703, 682.7777709960938, 490.3333282470703, 703.7777709960938, 541.3333282470703, 633.7777709960938, 456.3333282470703],
+[730.7777709960938, 599.3333282470703, 584.7777709960938,626.3333282470703, 597.7777709960938, 537.3333282470703, 568.7777709960938, 538.3333282470703, 622.7777709960938, 583.3333282470703, 595.7777709960938, 569.3333282470703, 594.7777709960938, 518.3333282470703, 687.7777709960938, 519.3333282470703, 620.7777709960938, 499.3333282470703, 682.7777709960938, 490.3333282470703, 703.7777709960938, 541.3333282470703, 633.7777709960938, 456.3333282470703],
+[663, 609, 584, 626, 553, 537, 536, 526, 615, 577, 583, 571, 594, 518, 687, 520, 612, 494, 653, 491, 690, 548, 620, 466],
+[663, 609, 584, 626, 553, 537, 536, 526, 615, 577, 583, 571, 594, 518, 687, 520, 612, 494, 653, 491, 690, 548, 620, 466],
+[663, 609, 584, 626, 553, 537, 536, 526, 615, 577, 583, 571, 594, 518, 687, 520, 612, 494, 653, 491, 690, 548, 620, 466],
+[663, 609, 584, 626, 553, 537, 536, 526, 615, 577, 583, 571, 594, 518, 687, 520, 612, 494, 653, 491, 690, 548, 620, 466],
+[663, 609, 584, 626, 553, 537, 536, 526, 615, 577, 583, 571, 594, 518, 687, 520, 612, 494, 653, 491, 690, 548, 620, 466],
+[663, 609, 584, 626, 553, 537, 536, 526, 615, 577, 583, 571, 594, 518, 687, 520, 612, 494, 653, 491, 690, 548, 620, 466],
+[663, 609, 584, 626, 553, 537, 536, 526, 615, 577, 583, 571, 594, 518, 687, 520, 612, 494, 653, 491, 690, 548, 620, 466],
+[663, 609, 584, 626, 553, 537, 536, 526, 615, 577, 583, 571, 594, 518, 687, 520, 612, 494, 653, 491, 690, 548, 620, 466],
+[663, 609, 584, 626, 553, 537, 536, 526, 615, 577, 583, 571, 594, 518, 687, 520, 612, 494, 653, 491, 690, 548, 620, 466],
+[663, 609, 584, 626, 553, 537, 536, 526, 615, 577, 583, 571, 594, 518, 687, 520, 612, 494, 653, 491, 690, 548, 620, 466],];
+let balls = [[553, 537],
+			[553, 537],
+			[548, 535],
+			[548, 535],
+			[548, 535],
+			[548, 535],
+			[548, 535],
+			[548, 535],
+			[548, 535],
+			[548, 535],
+			[548, 535],
+			[548, 535],];
+
+function preload() 
+{
+	for (var index = 1; index <= 12; index++)
+	{
+		var dataIndex = index - 1;
+		var img = loadImage('img/image' + index + '.jpg');
+		img.resize(imgSize, imgSize);
+		try
+		{
+			var skeleton = Skeleton.fromJsonString(skeletons[dataIndex]);	
+		}
+		catch (error)
+		{
+		
+			var skeleton = new Skeleton(skeletons[dataIndex][0],
+										skeletons[dataIndex][1],
+										skeletons[dataIndex][2],
+										skeletons[dataIndex][3],
+										skeletons[dataIndex][4],
+										skeletons[dataIndex][5],
+										skeletons[dataIndex][6],
+										skeletons[dataIndex][7],
+										skeletons[dataIndex][8],
+										skeletons[dataIndex][9],
+										skeletons[dataIndex][10],
+										skeletons[dataIndex][11],
+										skeletons[dataIndex][12],
+										skeletons[dataIndex][13],
+										skeletons[dataIndex][14],
+										skeletons[dataIndex][15],
+										skeletons[dataIndex][16],
+										skeletons[dataIndex][17],
+										skeletons[dataIndex][18],
+										skeletons[dataIndex][19],
+										skeletons[dataIndex][20],
+										skeletons[dataIndex][21],
+										skeletons[dataIndex][22],
+										skeletons[dataIndex][23]);
+		}
+		
+		var ball = new Ball(balls[dataIndex][0], balls[dataIndex][1]);
+		dataFrames.push(new imageSkeleton(img, skeleton, ball, "image" + index + ".jpg"));
+	}
 }
 
 // setup all the simulation before starting 
