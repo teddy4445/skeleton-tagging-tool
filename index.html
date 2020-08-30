@@ -1,7 +1,7 @@
 <html>
  <head>
   <title>
-   Skeleton Tagging Tool
+   Skeleton Tagging Tool and move performance
   </title>
   
   <script language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.1/p5.js" type="text/javascript"></script>  
@@ -20,10 +20,10 @@
    <div class="row center spacer">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
      <h1 class="center head">
-	 Skeleton Tagging Tool
+	 Move Performance Evaluation Demo
      </h1>
      <h2 class="center title">
-      The following tool allows skeleton tagging for videos.
+      The following tool allows trainers to build a guided ground truth (GT) skeleton from a video.
      </h2>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -50,6 +50,19 @@
        </div>
       </div>
      </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 50px;">
+     <h2 class="center title">
+      Upload here the move you wish to compare with the ground truth tagged above
+     </h2>
+		<form style="width: 100%; min-height: 100px; border: 2px solid black; margin: 20px 20px; padding: 20px 20px;">
+			<input type="file" name="move-video" id="move-video" disabled>
+		</form>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="margin-top: 50px;">
+     <h2 class="center title">
+      Checkout frame by frame comparision
+     </h2>
     </div>
    </div>
   </div>

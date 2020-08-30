@@ -88,6 +88,22 @@ class Skeleton
 		]
 	}
 	
+	toConstractorValues()
+	{
+		return [this.leg_left.x, this.leg_left.y, 
+				this.leg_right.x, this.leg_right.y,
+				this.hand_right.x, this.hand_right.y,
+				this.hand_left.x, this.hand_left.y,
+				this.leg_left_knee.x, this.leg_left_knee.y,
+				this.leg_right_knee.x, this.leg_right_knee.y,
+				this.hand_left_knee.x, this.hand_left_knee.y,
+				this.hand_right_knee.x, this.hand_right_knee.y,
+				this.sholder_left.x, this.sholder_left.y,
+				this.sholder_right.x, this.sholder_right.y,
+				this.center.x, this.center.y,
+				this.head.x, this.head.y];
+	}
+	
 	static fromJsonString(jsonString)
 	{
 		var jsonObj = JSON.parse(jsonString);
