@@ -85,7 +85,14 @@ class Skeleton
 			this.sholder_right, 
 			this.center, 
 			this.head,
-		]
+		];
+		
+		this.editable = true;
+	}
+	
+	close_editing()
+	{
+		this.editable = false;
 	}
 	
 	toConstractorValues()
@@ -123,6 +130,12 @@ class Skeleton
 	
 	on_point(x, y)
 	{
+		// if not editable - do not allow changing items
+		if (!this.editable)
+		{
+			return "";
+		}
+		
 		for (var i = 0; i < this.joints.length; i++)
 		{
 			if (this.joints[i].is_hit(x, y))
@@ -135,6 +148,12 @@ class Skeleton
 	
 	set_new_point(name, new_x, new_y)
 	{
+		// if not editable - do not allow changing items
+		if (!this.editable)
+		{
+			return "";
+		}
+		
 		this.sholder_center.x = (this.sholder_right.x + this.sholder_left.x) / 2;
 		this.sholder_center.y = (this.sholder_left.y + this.sholder_right.y) / 2;
 		for (var i = 0; i < this.joints.length; i++)
@@ -150,6 +169,15 @@ class Skeleton
 	
 	print()
 	{	
+		if (this.editable)
+		{
+			fill(255);
+		}
+		else
+		{
+			fill(0);
+		}
+	
 		// joints 
 		for (var i = 0; i < this.joints.length; i++)
 		{

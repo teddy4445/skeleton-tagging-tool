@@ -83,6 +83,26 @@ html, body
 	color: white;
 }
 
+.next-window{
+	margin-top: 10px;
+	margin-right: 20px;
+	box-sizing: border-box;
+	display:block;
+	height:80px;
+	line-height: 20px;
+	border: 2px solid #28a745;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    border-radius: .25rem;
+	color:#ffffff;
+	text-align:center;
+	text-decoration:none;
+	background-color: #28a745;
+	font-size: 22px;
+	width: 100%;
+}
+
 .act-button {
 	margin-top: 10px;
 	margin-right: 20px;
