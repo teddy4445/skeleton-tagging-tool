@@ -6,8 +6,15 @@ var countFrame = 0;
 var dataFrames = [];
 var sampleFrames = [];
 
+
+var gtSkeletons = [];
+var sampleSkeletonds = [];
+
 var dragObject = "";
 dragging = false;
+
+// final compare score
+let finalComapre = 0;
 
 let sectionIndex = 0;
 
@@ -32,16 +39,24 @@ function keyPressed()
 
 function nextWindow()
 {
-	document.getElementById("title-" + sectionIndex).style.display = "";
+	document.getElementById("title-" + sectionIndex).style.display = "none";
 	
 	sectionIndex += 1;
 	countFrame = 0;
 	
-	document.getElementById("title-" + sectionIndex).style.display = "none";
+	document.getElementById("title-" + sectionIndex).style.display = "";
 	
 	if (sectionIndex == 2)
 	{
 		document.getElementById("next_window").style.display = "none";
+		document.getElementById("compare_score").style.display = "";
+		
+		for (var skeletonIndex = 0; skeletonIndex < dataFrames.length; skeletonIndex++)
+		{
+			gtSkeletons.push(dataFrames[skeletonIndex].skeleton);
+		}
+		
+		finalComapre = SkeletonCompare.totalCompare(gtSkeletons, sampleSkeletonds);
 	}
 }
 
@@ -194,7 +209,6 @@ function preload()
 										skeletons[dataIndex][22],
 										skeletons[dataIndex][23]);
 		}
-		
 		var ball = new Ball(balls[dataIndex][0], balls[dataIndex][1]);
 		dataFrames.push(new imageSkeleton(img, skeleton, ball, "image" + index + ".jpg"));
 	}
@@ -238,6 +252,7 @@ function preload()
 										skeletons2[dataIndex][23]);
 		}
 		skeleton.close_editing();
+		sampleSkeletonds.push(skeleton);
 		var ball = new Ball(balls2[dataIndex][0], balls2[dataIndex][1]);
 		sampleFrames.push(new imageSkeleton(img, skeleton, ball, "image" + index + ".jpg"));
 	}
@@ -288,7 +303,15 @@ function draw()
 		background(79, 121, 66);
 		sampleFrames[countFrame].skeleton.print();
 		dataFrames[countFrame].skeleton.print();
+		document.getElementById("compare_score").innerHTML = "Frame score: " + SkeletonCompare.compare(dataFrames[countFrame].skeleton, sampleFrames[countFrame].skeleton);
+		
+		if (countFrame == sampleFrames.length - 1)
+		{
+			document.getElementById("compare_score").innerHTML += "<br> Final Move score is: " + finalComapre;
+		}
 	}
+	
+	
 }
 
 /*when mouse is pressed, 
