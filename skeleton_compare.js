@@ -44,7 +44,7 @@ class SkeletonCompare
 	static windowCompare(list_skeleton1, skeleton2, index)
 	{
 		var bestScore = 0;
-		for (var i = max(0, index - WINDOW_SIZE); i <= min(list_skeleton1.length, index + WINDOW_SIZE; i++)
+		for (var i = max(0, index - WINDOW_SIZE); i <= min(list_skeleton1.length, index + WINDOW_SIZE); i++)
 		{
 			var thisScore = SkeletonCompare.compare(list_skeleton1[i], skeleton2);
 			if (thisScore > bestScore)
