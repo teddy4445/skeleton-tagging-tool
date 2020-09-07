@@ -1,4 +1,5 @@
 let urlAnswer = "";
+let ERROR_STRING = "e";
 let API_URL = "https://basket.roundu.ai/api/process";
 let API_RESULT_URL = "https://basket.roundu.ai/result_url";
 
@@ -19,6 +20,10 @@ async function make_api_call()
 		{
 			await sleep(100);
 		}
+		if (urlAnswer == ERROR_STRING)
+		{
+			throw "HTTP call failed";
+		}
 		var gt_url_path = urlAnswer;
 		
 		// wait until answer is ready
@@ -29,6 +34,10 @@ async function make_api_call()
 			while (urlAnswer == "")
 			{
 				await sleep(100);
+			}
+			if (urlAnswer == ERROR_STRING)
+			{
+				throw "HTTP call failed";
 			}
 			var answer = Json.parse(urlAnswer);
 			if (answer["processed"])
@@ -43,6 +52,10 @@ async function make_api_call()
 		{
 			await sleep(100);
 		}
+		if (urlAnswer == ERROR_STRING)
+		{
+			throw "HTTP call failed";
+		}
 		var sample_url_path = urlAnswer;
 		
 		var flagAnswerIsFine = false;
@@ -52,6 +65,10 @@ async function make_api_call()
 			while (urlAnswer == "")
 			{
 				await sleep(100);
+			}
+			if (urlAnswer == ERROR_STRING)
+			{
+				throw "HTTP call failed";
 			}
 			var answer = Json.parse(urlAnswer);
 			if (answer["processed"])
@@ -78,27 +95,36 @@ async function make_api_call()
 
 async function make_http_call(url, method, value)
 {
-	httpAnswer = "";
-	const xhr = new XMLHttpRequest();
-	xhr.open(method, url);
-	xhr.setRequestHeader('Content-Type', 'application/json');
-	if (method == "post")
+	try
 	{
-		xhr.send(JSON.stringify({
-			"video": value
-		}));
-	}
-	else // method == "get"
-	{
-		xhr.send();
-	}
-
-	xhr.onreadystatechange = function()
-	{
-		if (this.readyState == 4 && this.status == 200)
+		httpAnswer = "";
+		const xhr = new XMLHttpRequest();
+		xhr.open(method, url);
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		if (method == "post")
 		{
-			urlAnswer =  this.responseText;
+			xhr.send("video=" + value);
 		}
+		else // method == "get"
+		{
+			xhr.send();
+		}
+
+		xhr.onreadystatechange = function()
+		{
+			if (this.readyState == 4 && this.status == 200)
+			{
+				urlAnswer =  this.responseText;
+			}
+			else
+			{
+				urlAnswer = ERROR_STRING;
+			}
+		}
+	}
+	catch (error)
+	{
+		console.log("Error");
 	}
 }
 
