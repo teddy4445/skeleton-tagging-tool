@@ -19,7 +19,7 @@ async function make_api_call()
 		make_http_call(API_URL, "post", gt_url);
 		while (urlAnswer == "")
 		{
-			await sleep(100);
+			await sleep(250);
 		}
 		if (urlAnswer == ERROR_STRING)
 		{
@@ -27,6 +27,7 @@ async function make_api_call()
 		}
 		var gt_url_path = urlAnswer["result_url"];
 		urlAnswer = "";
+		console.log("Get GT link result");
 		
 		// wait until answer is ready
 		var flagAnswerIsFine = false;
@@ -35,7 +36,7 @@ async function make_api_call()
 			make_http_call(gt_url_path, "get");
 			while (urlAnswer == "")
 			{
-				await sleep(100);
+				await sleep(250);
 			}
 			if (urlAnswer == ERROR_STRING)
 			{
@@ -45,14 +46,20 @@ async function make_api_call()
 			urlAnswer = "";
 			if (answer["processed"])
 			{
+				console.log("Got GT skeleton result");
 				await downloadSkeletons(answer["skeleton_url"], true);
+				flagAnswerIsFine = true;
+			}
+			else
+			{
+				console.log("Get GT skeleton result waiting....");
 			}
 		}
 		
 		make_http_call(API_URL, "post", sample_url);
 		while (urlAnswer == "")
 		{
-			await sleep(100);
+			await sleep(250);
 		}
 		if (urlAnswer == ERROR_STRING)
 		{
@@ -60,6 +67,7 @@ async function make_api_call()
 		}
 		var sample_url_path = urlAnswer["result_url"];
 		urlAnswer = "";
+		console.log("Get SAMPLE link result");
 		
 		var flagAnswerIsFine = false;
 		while(!flagAnswerIsFine)
@@ -67,7 +75,7 @@ async function make_api_call()
 			make_http_call(sample_url_path, "get");
 			while (urlAnswer == "")
 			{
-				await sleep(100);
+				await sleep(250);
 			}
 			if (urlAnswer == ERROR_STRING)
 			{
@@ -77,7 +85,13 @@ async function make_api_call()
 			urlAnswer = "";
 			if (answer["processed"])
 			{
+				console.log("Got SAMPLE skeleton result");
 				await downloadSkeletons(answer["skeleton_url"], false);
+				flagAnswerIsFine = true;
+			}
+			else
+			{
+				console.log("Get SAMPLE skeleton result waiting....");
 			}
 		}
 		
@@ -129,6 +143,7 @@ async function make_http_call(url, method, value = "")
 	}
 	catch (error)
 	{
+		urlAnswer = "";
 		console.log("Error in 'make_http_call' saying: " + error);
 	}
 }
@@ -137,10 +152,12 @@ async function downloadSkeletons(skeleton_url, is_gt)
 {
 	try
 	{
+		await sleep(250);
+		console.log("Download Skeleton from link: " + skeleton_url);
 		make_http_call(skeleton_url, "get");
 		while (urlAnswer == "")
 		{
-			await sleep(100);
+			await sleep(500);
 		}
 		if (urlAnswer == ERROR_STRING)
 		{
@@ -152,6 +169,8 @@ async function downloadSkeletons(skeleton_url, is_gt)
 	catch (error)
 	{
 		console.log("Error in 'downloadSkeletons' saying: " + error);
+		urlAnswer = "";
+		throw error;
 	}
 	
 	var frameSkeleton = [];
@@ -190,7 +209,6 @@ async function downloadSkeletons(skeleton_url, is_gt)
 	{
 		sekeletons_sample = answer;
 	}
-	flagAnswerIsFine = true;
 }
 
 function sleep(ms) {
