@@ -167,7 +167,19 @@ async function downloadSkeletons(skeleton_url, is_gt)
 	var answer = [];
 	for (var itemIndex = 0; itemIndex < data.length; itemIndex++)
 	{
-		answer.push(frameSkeleton[itemIndex][1]);
+		var values_arr = frameSkeleton[itemIndex][1];
+		answer.push([values_arr[14*3+0], values_arr[14*3+1], 
+					values_arr[11*3+0], values_arr[11*3+1], 
+					values_arr[7*3+0], values_arr[7*3+1],
+					values_arr[4*3+0], values_arr[4*3+1],
+					values_arr[13*3+0], values_arr[13*3+1],
+					values_arr[10*3+0], values_arr[10*3+1],
+					values_arr[6*3+0], values_arr[6*3+1],
+					values_arr[3*3+0], values_arr[3*3+1],
+					values_arr[5*3+0], values_arr[5*3+1],
+					values_arr[2*3+0], values_arr[2*3+1],
+					values_arr[8*3+0], values_arr[8*3+1],
+					values_arr[0*3+0], values_arr[0*3+1]]);
 	}
 	
 	if (is_gt)
