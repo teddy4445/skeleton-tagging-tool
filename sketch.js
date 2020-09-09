@@ -131,7 +131,7 @@ function preloadDataToSystem()
 	for (var index = 1; index <= sekeletons_gt.length; index++)
 	{
 		var dataIndex = index - 1;
-		var img = loadImage('img/gt/image' + index + '.jpg');
+		var img = loadImage(images_gt[dataIndex]);
 		img.resize(imgSize, imgSize);
 		try
 		{
@@ -173,7 +173,7 @@ function preloadDataToSystem()
 	for (var index = 1; index <= sekeletons_sample.length; index++)
 	{
 		var dataIndex = index - 1;
-		var img = loadImage('img/sample/image' + index + '.jpg');
+		var img = loadImage(images_sample[dataIndex]);
 		img.resize(imgSize, imgSize);
 		try
 		{

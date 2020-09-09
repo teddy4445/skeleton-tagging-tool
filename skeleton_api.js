@@ -2,7 +2,9 @@ let urlAnswer = "";
 let ERROR_STRING = "e";
 let API_URL = "https://basket.roundu.ai/api/process";
 
+let images_gt = [];
 let sekeletons_gt = [];
+let images_sample = [];
 let sekeletons_sample = [];
 
 async function make_api_call()
@@ -47,7 +49,7 @@ async function make_api_call()
 			if (answer["processed"])
 			{
 				console.log("Got GT skeleton result");
-				await downloadSkeletons(answer["skeleton_url"], true);
+				await downloadSkeletons(answer["skeleton_url"], answer["frames_url"], true);
 				flagAnswerIsFine = true;
 			}
 			else
@@ -86,7 +88,7 @@ async function make_api_call()
 			if (answer["processed"])
 			{
 				console.log("Got SAMPLE skeleton result");
-				await downloadSkeletons(answer["skeleton_url"], false);
+				await downloadSkeletons(answer["skeleton_url"], answer["frames_url"], false);
 				flagAnswerIsFine = true;
 			}
 			else
@@ -121,7 +123,7 @@ async function make_http_call(url, method, value = "")
 		{
 			xhr.open(method, url, true);
 			xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-			xhr.send("video=" + value);
+			xhr.send("video=" + value + "&save_frames=1");
 		}
 		else // method == "get"
 		{
@@ -148,7 +150,7 @@ async function make_http_call(url, method, value = "")
 	}
 }
 
-async function downloadSkeletons(skeleton_url, is_gt)
+async function downloadSkeletons(skeleton_url, frames_url, is_gt)
 {
 	try
 	{
@@ -173,6 +175,29 @@ async function downloadSkeletons(skeleton_url, is_gt)
 		throw error;
 	}
 	
+	try
+	{
+		await sleep(250);
+		console.log("Download Frames from link: " + frames_url);
+		make_http_call(frames_url, "get");
+		while (urlAnswer == "")
+		{
+			await sleep(500);
+		}
+		if (urlAnswer == ERROR_STRING)
+		{
+			throw "HTTP call failed";
+		}
+		var data_frames = urlAnswer;
+		urlAnswer = "";
+	}
+	catch (error)
+	{
+		console.log("Error in 'downloadSkeletons' saying: " + error);
+		urlAnswer = "";
+		throw error;
+	}
+	
 	var frameSkeleton = [];
 	for (var itemIndex = 0; itemIndex < data.length; itemIndex++)
 	{
@@ -183,8 +208,20 @@ async function downloadSkeletons(skeleton_url, is_gt)
 		return parseInt(a[0]) - parseInt(b[0]);
 	});
 	
+	
+	var frameImg = [];
+	for (var itemIndex = 0; itemIndex < data_frames.length; itemIndex++)
+	{
+		frameImg.push([data_frames[itemIndex]["frame"], data_frames[itemIndex]["img"]]);
+	}
+	frameImg.sort(function(a, b)
+	{ 
+		return parseInt(a[0]) - parseInt(b[0]);
+	});
+	
 	var answer = [];
-	for (var itemIndex = 0; itemIndex < data.length; itemIndex++)
+	var answer_frames = [];
+	for (var itemIndex = 0; itemIndex < Math.min(frameSkeleton.length, frameImg.length); itemIndex++)
 	{
 		var values_arr = frameSkeleton[itemIndex][1];
 		answer.push([values_arr[14*3+0], values_arr[14*3+1], 
@@ -199,15 +236,18 @@ async function downloadSkeletons(skeleton_url, is_gt)
 					values_arr[2*3+0], values_arr[2*3+1],
 					values_arr[8*3+0], values_arr[8*3+1],
 					values_arr[0*3+0], values_arr[0*3+1]]);
+		answer_frames.push(frameImg[itemIndex][1]);
 	}
 	
 	if (is_gt)
 	{
 		sekeletons_gt = answer;
+		images_gt = answer_frames;
 	}
 	else
 	{
 		sekeletons_sample = answer;
+		images_sample = answer_frames;
 	}
 }
 
