@@ -25,6 +25,7 @@ async function make_api_call()
 		}
 		if (urlAnswer == ERROR_STRING)
 		{
+			console.log("Error in '" + API_URL + '" post request');
 			throw "HTTP call failed";
 		}
 		var gt_url_path = urlAnswer["result_url"];
@@ -42,6 +43,7 @@ async function make_api_call()
 			}
 			if (urlAnswer == ERROR_STRING)
 			{
+				console.log("Error in '" + API_URL + '" post request');
 				throw "HTTP call failed";
 			}
 			var answer = urlAnswer;
@@ -123,7 +125,7 @@ async function make_http_call(url, method, value = "")
 		{
 			xhr.open(method, url, true);
 			xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-			xhr.send("video=" + value + "&save_frames=1");
+			xhr.send("video=" + value + "&save_frames=1&workout_type=crossover");
 		}
 		else // method == "get"
 		{
@@ -135,10 +137,12 @@ async function make_http_call(url, method, value = "")
 		{
 			if (this.readyState == 4 && this.status == 200)
 			{
+				console.log("Get good response");
 				urlAnswer = JSON.parse(this.responseText);
 			}
 			else
 			{
+				console.log("Get bad response");
 				urlAnswer = ERROR_STRING;
 			}
 		}
