@@ -36,7 +36,7 @@ async function make_api_call()
 		var flagAnswerIsFine = false;
 		while(!flagAnswerIsFine)
 		{		
-			make_http_call(gt_url_path, "post");
+			make_http_call(gt_url_path, "get");
 			while (urlAnswer == "")
 			{
 				await sleep(250);
@@ -76,7 +76,7 @@ async function make_api_call()
 		var flagAnswerIsFine = false;
 		while(!flagAnswerIsFine)
 		{		
-			make_http_call(sample_url_path, "post");
+			make_http_call(sample_url_path, "get");
 			while (urlAnswer == "")
 			{
 				await sleep(250);
