@@ -207,7 +207,14 @@ async function downloadSkeletons(skeleton_url, frames_url, is_gt)
 	var frameSkeleton = [];
 	for (var itemIndex = 0; itemIndex < data.length; itemIndex++)
 	{
-		frameSkeleton.push([data[itemIndex]["frame"], data[itemIndex]["people"][0]["pose_keypoints_2d"]]);
+		try
+		{
+			frameSkeleton.push([data[itemIndex]["frame"], data[itemIndex]["people"][0]["pose_keypoints_2d"]]);	
+		}
+		catch (error)
+		{
+			console.error("Error in parse skeleton in index = " + itemIndex + " with error: " + error);
+		}
 	}
 	frameSkeleton.sort(function(a, b)
 	{ 
