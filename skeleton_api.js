@@ -36,7 +36,7 @@ async function make_api_call()
 		var flagAnswerIsFine = false;
 		while(!flagAnswerIsFine)
 		{		
-			make_http_call(gt_url_path, "get");
+			make_http_call(gt_url_path, "post");
 			while (urlAnswer == "")
 			{
 				await sleep(250);
@@ -76,7 +76,7 @@ async function make_api_call()
 		var flagAnswerIsFine = false;
 		while(!flagAnswerIsFine)
 		{		
-			make_http_call(sample_url_path, "get");
+			make_http_call(sample_url_path, "post");
 			while (urlAnswer == "")
 			{
 				await sleep(250);
@@ -129,8 +129,8 @@ async function make_http_call(url, method, value = "")
 		}
 		else // method == "get"
 		{
-			xhr.open(method, url);
-			xhr.send();
+			xhr.open("GET", url, true);
+			xhr.send(null);
 		}
 
 		xhr.onreadystatechange = function()
