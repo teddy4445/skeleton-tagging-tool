@@ -119,6 +119,8 @@ async function make_http_call(url, method, value = "")
 {
 	try
 	{
+		url = url.replace("http", "https").replace("httpss", "https");
+		
 		httpAnswer = "";
 		const xhr = new XMLHttpRequest();
 		if (method == "post")
