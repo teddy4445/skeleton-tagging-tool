@@ -261,14 +261,23 @@ function draw()
 	}
 	else // if (sectionIndex == 2) comparision
 	{
-		background(79, 121, 66);
-		sampleFrames[countFrame].skeleton.print();
-		dataFrames[countFrame].skeleton.print();
-		document.getElementById("compare_score").innerHTML = "Frame score: " + SkeletonCompare.compare(dataFrames[countFrame].skeleton, sampleFrames[countFrame].skeleton);
-		
-		if (countFrame == sampleFrames.length - 1)
+		try{
+			background(79, 121, 66);
+			dataFrames[countFrame].skeleton.print();
+			sampleFrames[countFrame].skeleton.print();
+			fill(255);
+			text("Frame " + (1 + countFrame) + " / " + dataFrames.length, 20, 30);
+			dataFrames[countFrame].skeleton.print();
+			document.getElementById("compare_score").innerHTML = "Frame score: " + SkeletonCompare.compare(dataFrames[countFrame].skeleton, sampleFrames[countFrame].skeleton);
+			
+			if (countFrame == sampleFrames.length - 1 || countFrame == 0)
+			{
+				document.getElementById("compare_score").innerHTML += "<br> Final Move score is: " + finalComapre;
+			}	
+		}
+		catch (error)
 		{
-			document.getElementById("compare_score").innerHTML += "<br> Final Move score is: " + finalComapre;
+			console.error("Error at draw of sectionIndex = 2, saying: " + error);
 		}
 	}
 	
