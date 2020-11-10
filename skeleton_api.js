@@ -39,7 +39,7 @@ async function make_api_call()
 			make_http_call(gt_url_path, "get");
 			while (urlAnswer == "")
 			{
-				await sleep(250);
+				await sleep(1500);
 			}
 			if (urlAnswer == ERROR_STRING)
 			{
@@ -79,7 +79,7 @@ async function make_api_call()
 			make_http_call(sample_url_path, "get");
 			while (urlAnswer == "")
 			{
-				await sleep(250);
+				await sleep(1500);
 			}
 			if (urlAnswer == ERROR_STRING)
 			{
