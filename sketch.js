@@ -263,7 +263,9 @@ function draw()
 	{
 		try{
 			background(79, 121, 66);
+			fill(255);
 			dataFrames[countFrame].skeleton.print();
+			fill(0);
 			sampleFrames[countFrame].skeleton.print();
 			fill(255);
 			text("Frame " + (1 + countFrame) + " / " + dataFrames.length, 20, 30);
